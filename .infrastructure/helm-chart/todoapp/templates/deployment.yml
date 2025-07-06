@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}--{{ .Chart.Name }}
+  name: {{ .Chart.Name }}
   namespace: {{ .Values.common.namespace }}
 spec:
   strategy:
@@ -41,13 +41,13 @@ spec:
             - name: PYTHONUNBUFFERED
               valueFrom:
                 configMapKeyRef:
-                  name: app-config
+                  name: {{ .Chart.Name }}-config
                   key: PYTHONUNBUFFERED
             {{- range .Values.todoapp.secrets }}
             - name: {{ . }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $.Chart.Name }}-secret
+                  name: {{ .Chart.Name }}-secret
                   key: {{ . }}
             {{- end }}
           ports:
